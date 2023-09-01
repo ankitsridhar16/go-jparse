@@ -2,7 +2,6 @@ package lexer
 
 import (
 	"errors"
-	"log"
 )
 
 const (
@@ -25,7 +24,7 @@ func lexString(str string) (string, string, error) {
 			jStr = jStr + string(char)
 		}
 	}
-	return "", "", errors.New("Expected end of quote")
+	return "", "", errors.New("Expected end of string quote")
 }
 
 func lex(str string) {
@@ -34,10 +33,14 @@ func lex(str string) {
 	for len(str) != 0 {
 		jString, rStr, errLexStr := lexString(str)
 		if errLexStr != nil {
-			log.Fatal(errLexStr)
+			break
+		}
+		if jString != "" {
+			tokens = append(tokens, jString)
+			continue
 		}
 		str = rStr
-		tokens = append(tokens, jString)
+
 	}
 
 }
